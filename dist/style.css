@@ -1,0 +1,123 @@
+body
+{
+    background: #1f1f1f;
+    font-family: 'Quicksand', sans-serif;
+    color: #ffffff;
+    text-align: center;
+}
+
+img { margin: 0; padding: 0;}
+
+h1
+{
+    font: bold 48pt 'Quicksand', snas-serif;
+    text-align: center;
+    padding: 10% 0 60px 0;
+}
+
+p
+{
+    font: normal 18pt 'Quicksand', snas-serif;
+    text-align: center;
+    line-height: 27pt;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+video {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%; 
+  min-height: 100%;
+  opacity: 0.1;
+}
+
+.buttons
+{
+    margin: 58px auto;
+}
+
+div.image-link {
+    transition: opacity 0.5s ease, background-size 0.5s ease;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+}
+
+div.image-box {
+    padding: 0;
+}
+
+div.image-link:hover
+{
+    opacity: 1;
+    background-size: 105%;
+}
+
+div.image-link:before {
+    content: '';
+    width: 1px;
+    padding-bottom: 70%;
+    display: block;
+}
+
+a.empty
+{
+    display: inline-block;
+    width: 220px;
+    padding: 12px 0;
+    border: solid 4px #0050f3;
+    border-radius: 30px;
+    text-align: center;
+    font: normal 18pt 'Quicksand', snas-serif;
+    color: #ffffff;
+    background: none;
+    transition: background-color 0.5s ease, box-shadow 0.5s ease;
+    margin: 12px 12px;
+}
+a.empty:hover
+{
+    text-decoration: none;
+    background-color: #0050f3;
+    box-shadow: 0 0 20px #0b3893;
+}
+
+a.social_link img
+{
+    width: 20px;
+    height: 20px;
+    margin: 10px 10px;
+}
+
+.work
+{
+    height: 480px;
+    transition: opacity 0.5s ease, background-size 0.5s ease;
+    background-repeat: none;
+    background-size: 100%;
+    background-position: center;
+    line-height: 480px;
+}
+
+.work:hover
+{
+    opacity: 1;
+    background-size: 105%;
+}
+.work a
+{
+    margin: auto;
+    opacity: 0;
+    border-color: #0050f3;
+    background-color: #0050f3;
+    color: #ffffff;
+    transition: opacity 0.5s ease;
+}
+.work:hover a
+{
+    opacity: 1;
+    background-color: #0050f3;
+    box-shadow: none;
+}
