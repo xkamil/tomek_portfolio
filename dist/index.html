@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <!-- Core CSS file -->
-    <link rel="stylesheet" href="photoswipe/photoswipe.css">
-    <link rel="stylesheet" href="photoswipe/default-skin/default-skin.css">
-    <script src="photoswipe/photoswipe.js"></script>
-    <script src="photoswipe/photoswipe-ui-default.js"></script>
+
+    <!-- Photoswipe gallery -->
+    <link rel="stylesheet" href="lib/photoswipe/photoswipe.css">
+    <link rel="stylesheet" href="lib/photoswipe/default-skin/default-skin.css">
+    <script src="lib/photoswipe/photoswipe.js"></script>
+    <script src="lib/photoswipe/photoswipe-ui-default.js"></script>
+
+    <!--EJS templates-->
+    <script src="lib/ejs.js"></script>
 </head>
 <body>
 <div id="gallery">
@@ -81,56 +85,25 @@
 </div>
 
 <script>
-    let images = null;
-    let images2 = null;
+    fetch('/api/images')
+        .then(res => res.json())
+        .then(json => renderGallery(json.data));
 
-    const templates = {
-        gelleryImg: '<img src="{{url}}" onclick="openG(\'{{category}}\')"/>'
-        //gelleryImg: '<img src="{{url}}" onclick="console.log(\'dupa\')"/>'
-    };
-
-
-    function openG(name){
-        console.log(name);
-        openGallery(images2[name.trim()].images);
-    }
-
-    function buildTemplate(template, props) {
-        let processedTemplate = template;
-        Object.getOwnPropertyNames(props).forEach(propName => {
-            processedTemplate = processedTemplate.replace('{{' + propName + '}}', props[propName])
-        });
-        return processedTemplate;
-    }
-    function openGallery(items){
-        let parsedItems = items.map(item => ({src: item, w: 600, h: 600}));
-
+    function openGallery(images) {
         let pswpElement = document.querySelectorAll('.pswp')[0];
-        let options = {
-            index: 0
-        };
-        let gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, parsedItems, options);
+        let options = {index: 0};
+        let gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, images, options);
         gallery.init();
     }
 
-    fetch('/api/images')
-        .then(res => res.json())
-        .then(json => {
-            images = json.data;
-            images2 = json.data;
-            renderGallery();
-        });
-
-
-    function renderGallery() {
-        let miniImages = Object.getOwnPropertyNames(images)
-            .filter(name => images[name].mini_image != null)
-            .map(name => ({category: name, url:images[name].mini_image}));
-
-        let html = miniImages.map(img => buildTemplate(templates.gelleryImg, {url: img.url, category: img.category})).join('');
+    function renderGallery(imageData) {
+        let template = '<img src="<%= mini_image %>" onclick="openGallery(<%= JSON.stringify(images) %>)"/>';
+        let html = Object.getOwnPropertyNames(imageData)
+            .filter(name => imageData[name].mini_image)
+            .map(name => ejs.render(template, imageData[name]))
+            .join('');
         document.getElementById('gallery').innerHTML = html;
     }
-
 </script>
 
 </body>

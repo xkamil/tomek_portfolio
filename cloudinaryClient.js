@@ -5,26 +5,26 @@ const BASE_URL = `https://api.cloudinary.com/v1_1/${API_USER}`;
 const BASE_FOLDER = 'works';
 const fetch = require('node-fetch');
 
-function getImages(){
+function getImages() {
     return get(`${BASE_URL}/resources/search?expression=resource_type:image AND folder:${BASE_FOLDER}/*`)
         .then(body => {
             const images = {};
 
-            body.resources.forEach(res=>{
+            body.resources.forEach(res => {
                 const folderName = res.folder.substring(BASE_FOLDER.length + 1);
 
-                if(folderName.trim().length > 0){
-                    if(!images[folderName]){
+                if (folderName.trim().length > 0) {
+                    if (!images[folderName]) {
                         images[folderName] = {
                             mini_image: null,
                             images: []
                         };
                     }
 
-                    if(res.filename === folderName){
+                    if (res.filename === folderName) {
                         images[folderName].mini_image = res.url;
-                    }else{
-                        images[folderName].images.push(res.url);
+                    } else {
+                        images[folderName].images.push({src: res.url, w: res.width, h: res.height});
                     }
                 }
             });
@@ -32,11 +32,11 @@ function getImages(){
         })
 }
 
-function get(url){
+function get(url) {
     const options = {
         method: 'GET',
         headers: {
-            'Authorization' : 'Basic ' + Buffer.from(`${API_KEY}:${API_SECRET}`).toString('base64')
+            'Authorization': 'Basic ' + Buffer.from(`${API_KEY}:${API_SECRET}`).toString('base64')
         }
     };
     return fetch(url, options).then(res => res.json())
